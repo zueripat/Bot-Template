@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "prettier": {
+    "printWidth": 140,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "jsxSingleQuote": true,
+    "semi": true,
+    "trailingComma": "all"
+  },
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.3.1",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
+    "sharp": "^0.32.6",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "prettier": "^3.0.3",
+    "prisma": "^5.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
