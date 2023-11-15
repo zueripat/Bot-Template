@@ -1,5 +1,5 @@
-import { Event } from '../../lib/schema';
-import { logger } from '../../lib/logging';
+import { Event } from '../lib/schema';
+import { logger } from '../lib/logging';
 
 const log = logger.child({ class: 'Ready' });
 

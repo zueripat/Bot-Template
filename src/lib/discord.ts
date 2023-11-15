@@ -55,9 +55,9 @@ class DC extends Client {
     }
 
     private async loadCommands(): Promise<void> {
-        const commandFiles = await readdir(join(__dirname, '../components/commands'));
+        const commandFiles = await readdir(join(__dirname, '../commands'));
         for (const file of commandFiles) {
-            const command = (await import(join(__dirname, '../components/commands', file))) as { default: Command };
+            const command = (await import(join(__dirname, '../commands', file))) as { default: Command };
             this.logger.info(`Loading command ${command.default.data.name}`);
             this.commands.set(command.default.data.name, command.default);
 
@@ -84,9 +84,9 @@ class DC extends Client {
     }
 
     private async loadEvents(): Promise<void> {
-        const eventFiles = await readdir(join(__dirname, '../components/events'));
+        const eventFiles = await readdir(join(__dirname, '../events'));
         for (const file of eventFiles) {
-            const event = (await import(join(__dirname, '../components/events', file))) as { default: Event };
+            const event = (await import(join(__dirname, '../events', file))) as { default: Event };
             this.logger.info(`Loading event ${event.default.name}`);
             this.events.set(event.default.name, event.default);
 
