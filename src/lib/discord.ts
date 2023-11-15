@@ -1,13 +1,13 @@
 import {
+    AutocompleteInteraction,
     Client,
+    ClientEvents,
     ClientOptions,
     Collection,
-    Routes,
     CommandInteraction,
-    AutocompleteInteraction,
     ModalSubmitInteraction,
-    ClientEvents,
     REST,
+    Routes,
 } from 'discord.js';
 import { logger } from './logging';
 import { Command, Event } from './schema';
@@ -33,22 +33,28 @@ class DC extends Client {
         await this.loadEvents();
 
         const rest = new REST({ version: '10' }).setToken(token);
+        const clientID = process.env.DISCORD_CLIENT_ID;
+        const guildID = process.env.DISCORD_GUILD_ID;
+
         try {
             this.logger.info('Started refreshing application (/) commands.');
+            const globalCommands = this.commands.filter((command) => command.global);
+            const guildCommands = this.commands.filter((command) => !command.global);
 
-            if (process.env.GUILD_ID && this.user) {
-                const guildCommands = this.commands.filter((command) => !command.global);
-                await rest.put(Routes.applicationGuildCommands(this.user.id, process.env.GUILD_ID), {
-                    body: guildCommands.map((command) => command.data.toJSON()),
-                });
+            if (clientID) {
+                if (guildID) {
+                    await rest.put(Routes.applicationGuildCommands(clientID, guildID), {
+                        body: guildCommands.map((command) => command.data.toJSON()),
+                    });
+                } else {
+                    this.logger.warn('No guild ID provided, not reloading guild (/) commands.');
+                }
 
-                const globalCommands = this.commands.filter((command) => command.global);
-                await rest.put(Routes.applicationCommands(this.user.id), {
-                    body: globalCommands.map((command) => command.data.toJSON()),
-                });
+                await rest.put(Routes.applicationCommands(clientID), { body: globalCommands.map((command) => command.data.toJSON()) });
+                this.logger.info('Successfully reloaded application (/) commands.');
+            } else {
+                this.logger.warn('No client ID provided, not reloading (/) commands.');
             }
-
-            this.logger.info('Successfully reloaded application (/) commands.');
         } catch (error) {
             this.logger.error('Failed to reload application (/) commands.', error);
         }
