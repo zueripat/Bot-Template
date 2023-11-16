@@ -4,13 +4,14 @@ import {
     ClientEvents,
     ClientOptions,
     Collection,
-    CommandInteraction,
+    ContextMenuCommandBuilder,
     ModalSubmitInteraction,
     REST,
     Routes,
+    SlashCommandBuilder,
 } from 'discord.js';
 import { logger } from './logging';
-import { Command, Event } from './schema';
+import { Command, CommandInteractionType, Event } from './schema';
 
 import { join } from 'path';
 import { readdir } from 'fs/promises';
@@ -18,8 +19,8 @@ import { PrismaClient } from '@prisma/client';
 
 class DC extends Client {
     private logger = logger.child({ class: 'DC' });
-    private commands: Collection<string, Command> = new Collection();
-    private events: Collection<keyof ClientEvents, Event> = new Collection();
+    private commands: Collection<string, Command<SlashCommandBuilder | ContextMenuCommandBuilder>> = new Collection();
+    private events: Collection<keyof ClientEvents, Event<keyof ClientEvents>> = new Collection();
     public prisma: PrismaClient;
 
     constructor(options: ClientOptions) {
@@ -63,14 +64,16 @@ class DC extends Client {
     private async loadCommands(): Promise<void> {
         const commandFiles = await readdir(join(__dirname, '../commands'));
         for (const file of commandFiles) {
-            const command = (await import(join(__dirname, '../commands', file))) as { default: Command };
+            const command = (await import(join(__dirname, '../commands', file))) as {
+                default: Command<SlashCommandBuilder | ContextMenuCommandBuilder>;
+            };
             this.logger.info(`Loading command ${command.default.data.name}`);
             this.commands.set(command.default.data.name, command.default);
 
             this.on('interactionCreate', async (interaction) => {
                 switch (true) {
                     case interaction.isChatInputCommand() || interaction.isContextMenuCommand():
-                        const commandInteraction = interaction as CommandInteraction;
+                        const commandInteraction = interaction as CommandInteractionType<SlashCommandBuilder | ContextMenuCommandBuilder>;
                         await command.default.execute(commandInteraction, this);
                         break;
                     case interaction.isAutocomplete():
@@ -92,7 +95,7 @@ class DC extends Client {
     private async loadEvents(): Promise<void> {
         const eventFiles = await readdir(join(__dirname, '../events'));
         for (const file of eventFiles) {
-            const event = (await import(join(__dirname, '../events', file))) as { default: Event };
+            const event = (await import(join(__dirname, '../events', file))) as { default: Event<keyof ClientEvents> };
             this.logger.info(`Loading event ${event.default.name}`);
             this.events.set(event.default.name, event.default);
 

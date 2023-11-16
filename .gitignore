@@ -9,6 +9,12 @@ package-lock.json
 .env
 prisma/migrations/
 
+# Ignore all TS files except for the template files
+*.ts
+!src/index.ts
+!src/lib/**/*.ts
+!src/events/ready.ts
+!src/commands/ping.ts
 
 # IDE
 .idea
