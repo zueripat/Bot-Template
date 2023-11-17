@@ -1,24 +1,38 @@
 import {
     AutocompleteInteraction,
+    ChatInputCommandInteraction,
     ClientEvents,
-    CommandInteraction,
     ContextMenuCommandBuilder,
+    ContextMenuCommandInteraction,
     ModalSubmitInteraction,
     SlashCommandBuilder,
 } from 'discord.js';
 import { DC } from './discord';
 
-export type Command = {
+export type CommandInteractionType<T> = T extends SlashCommandBuilder
+    ? ChatInputCommandInteraction
+    : T extends ContextMenuCommandBuilder
+      ? ContextMenuCommandInteraction
+      : never;
+
+export type CommandData<T> = T extends SlashCommandBuilder
+    ? Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> &
+          Partial<Pick<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>>
+    : T extends ContextMenuCommandBuilder
+      ? ContextMenuCommandBuilder
+      : never;
+
+export type Command<T extends SlashCommandBuilder | ContextMenuCommandBuilder> = {
     global?: boolean;
     customId?: string;
-    data: SlashCommandBuilder | ContextMenuCommandBuilder;
-    execute: (interaction: CommandInteraction, client: DC) => Promise<void>;
+    data: CommandData<T>;
+    execute: (interaction: CommandInteractionType<T>, client: DC) => Promise<void>;
     autocomplete?: (interaction: AutocompleteInteraction, client: DC) => Promise<void>;
     submit?: (interaction: ModalSubmitInteraction, client: DC) => Promise<void>;
 };
 
-export type Event = {
+export type Event<T extends keyof ClientEvents> = {
     once?: boolean;
-    name: keyof ClientEvents;
-    execute: (...args: any[]) => Promise<void>;
+    name: T;
+    execute: (...args: ClientEvents[T]) => Promise<void>;
 };

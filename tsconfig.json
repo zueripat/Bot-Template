@@ -1,14 +1,16 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "commonjs",
-  },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "build"]
+    "compilerOptions": {
+        "target": "ESNext",
+        "moduleResolution": "Node",
+        "lib": ["DOM.Iterable", "DOM", "ESNext"],
+        "strict": true,
+        "noEmit": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "rootDirs": ["src"],
+        "outDir": "build",
+        "module": "CommonJS"
+    },
+    "include": ["**/*.ts"],
+    "exclude": ["node_modules", "build"]
 }
