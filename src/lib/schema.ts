@@ -16,8 +16,36 @@ export type CommandInteractionType<T> = T extends SlashCommandBuilder
       : never;
 
 export type CommandData<T> = T extends SlashCommandBuilder
-    ? Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> &
-          Partial<Pick<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>>
+    ? Omit<
+          SlashCommandBuilder,
+          | 'addSubcommand'
+          | 'addSubcommandGroup'
+          | 'addStringOption'
+          | 'addIntegerOption'
+          | 'addBooleanOption'
+          | 'addUserOption'
+          | 'addChannelOption'
+          | 'addRoleOption'
+          | 'addMentionableOption'
+          | 'addNumberOption'
+          | 'addAttachmentOption'
+      > &
+          Partial<
+              Pick<
+                  SlashCommandBuilder,
+                  | 'addSubcommand'
+                  | 'addSubcommandGroup'
+                  | 'addStringOption'
+                  | 'addIntegerOption'
+                  | 'addBooleanOption'
+                  | 'addUserOption'
+                  | 'addChannelOption'
+                  | 'addRoleOption'
+                  | 'addMentionableOption'
+                  | 'addNumberOption'
+                  | 'addAttachmentOption'
+              >
+          >
     : T extends ContextMenuCommandBuilder
       ? ContextMenuCommandBuilder
       : never;
@@ -34,5 +62,5 @@ export type Command<T extends SlashCommandBuilder | ContextMenuCommandBuilder> =
 export type Event<T extends keyof ClientEvents> = {
     once?: boolean;
     name: T;
-    execute: (...args: ClientEvents[T]) => Promise<void>;
+    execute: (client: DC, ...args: ClientEvents[T]) => Promise<void>;
 };

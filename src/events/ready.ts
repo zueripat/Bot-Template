@@ -1,6 +1,7 @@
 import { Event } from '../lib/schema';
-import { Events } from 'discord.js';
 import { logger } from '../lib/logging';
+
+import { Events } from 'discord.js';
 
 const log = logger.child({ class: 'Ready' });
 

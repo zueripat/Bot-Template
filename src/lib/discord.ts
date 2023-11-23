@@ -51,7 +51,9 @@ class DC extends Client {
                     this.logger.warn('No guild ID provided, not reloading guild (/) commands.');
                 }
 
-                await rest.put(Routes.applicationCommands(clientID), { body: globalCommands.map((command) => command.data.toJSON()) });
+                await rest.put(Routes.applicationCommands(clientID), {
+                    body: globalCommands.map((command) => command.data.toJSON()),
+                });
                 this.logger.info('Successfully reloaded application (/) commands.');
             } else {
                 this.logger.warn('No client ID provided, not reloading (/) commands.');
@@ -73,12 +75,17 @@ class DC extends Client {
             this.on('interactionCreate', async (interaction) => {
                 switch (true) {
                     case interaction.isChatInputCommand() || interaction.isContextMenuCommand():
-                        const commandInteraction = interaction as CommandInteractionType<SlashCommandBuilder | ContextMenuCommandBuilder>;
+                        const commandInteraction = interaction as CommandInteractionType<
+                            SlashCommandBuilder | ContextMenuCommandBuilder
+                        >;
                         await command.default.execute(commandInteraction, this);
                         break;
                     case interaction.isAutocomplete():
                         const autocompleteInteraction = interaction as AutocompleteInteraction;
-                        if (autocompleteInteraction.commandName === command.default.data.name && command.default.autocomplete) {
+                        if (
+                            autocompleteInteraction.commandName === command.default.data.name &&
+                            command.default.autocomplete
+                        ) {
                             await command.default.autocomplete(autocompleteInteraction, this);
                         }
                         break;
@@ -100,9 +107,9 @@ class DC extends Client {
             this.events.set(event.default.name, event.default);
 
             if (event.default.once) {
-                this.once(event.default.name, (...args) => event.default.execute(...args));
+                this.once(event.default.name, (...args) => event.default.execute(this, ...args));
             } else {
-                this.on(event.default.name, (...args) => event.default.execute(...args));
+                this.on(event.default.name, (...args) => event.default.execute(this, ...args));
             }
         }
     }
