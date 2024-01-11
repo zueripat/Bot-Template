@@ -6,6 +6,7 @@
     "rules": {
         "@typescript-eslint/naming-convention": 0,
         "prefer-named-capture-group": 0,
-        "no-console": 1
+        "no-console": 1,
+        "import/extensions": ["error", "always"]
     }
 }

@@ -1,14 +1,15 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
-        "moduleResolution": "Node",
-        "lib": ["DOM.Iterable", "DOM", "ESNext"],
+        "outDir": "dist",
         "strict": true,
-        "noEmit": true,
+        "moduleResolution": "node",
+        "alwaysStrict": true,
         "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "CommonJS"
-    },
-    "include": ["**/*.ts"],
-    "exclude": ["node_modules", "build"]
+        "module": "ESNext",
+        "target": "ES2022",
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "resolveJsonModule": true
+    }
 }
