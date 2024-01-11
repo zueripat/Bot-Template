@@ -1,9 +1,12 @@
 import { Command } from '../lib/schema';
-import { SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction } from 'discord.js';
 
-const pingCommand: Command<SlashCommandBuilder> = {
+const pingCommand: Command<ChatInputCommandInteraction> = {
     global: false,
-    data: new SlashCommandBuilder().setName('ping').setDescription('Replies with Pong!'),
+    data: {
+        name: 'ping',
+        description: 'Replies with pong!',
+    },
     async execute(interaction) {
         await interaction.reply({ content: 'Pong!', ephemeral: true });
     },

@@ -2,65 +2,29 @@ import {
     AutocompleteInteraction,
     ChatInputCommandInteraction,
     ClientEvents,
-    ContextMenuCommandBuilder,
     ContextMenuCommandInteraction,
-    ModalSubmitInteraction,
-    SlashCommandBuilder,
+    Events,
+    RESTPostAPIChatInputApplicationCommandsJSONBody,
+    RESTPostAPIContextMenuApplicationCommandsJSONBody,
 } from 'discord.js';
-import { DC } from './discord';
+import { Bot } from './bot';
 
-export type CommandInteractionType<T> = T extends SlashCommandBuilder
-    ? ChatInputCommandInteraction
-    : T extends ContextMenuCommandBuilder
-      ? ContextMenuCommandInteraction
-      : never;
+export type CommandData<TInteraction> = TInteraction extends ChatInputCommandInteraction
+    ? RESTPostAPIChatInputApplicationCommandsJSONBody
+    : RESTPostAPIContextMenuApplicationCommandsJSONBody;
 
-export type CommandData<T> = T extends SlashCommandBuilder
-    ? Omit<
-          SlashCommandBuilder,
-          | 'addSubcommand'
-          | 'addSubcommandGroup'
-          | 'addStringOption'
-          | 'addIntegerOption'
-          | 'addBooleanOption'
-          | 'addUserOption'
-          | 'addChannelOption'
-          | 'addRoleOption'
-          | 'addMentionableOption'
-          | 'addNumberOption'
-          | 'addAttachmentOption'
-      > &
-          Partial<
-              Pick<
-                  SlashCommandBuilder,
-                  | 'addSubcommand'
-                  | 'addSubcommandGroup'
-                  | 'addStringOption'
-                  | 'addIntegerOption'
-                  | 'addBooleanOption'
-                  | 'addUserOption'
-                  | 'addChannelOption'
-                  | 'addRoleOption'
-                  | 'addMentionableOption'
-                  | 'addNumberOption'
-                  | 'addAttachmentOption'
-              >
-          >
-    : T extends ContextMenuCommandBuilder
-      ? ContextMenuCommandBuilder
-      : never;
-
-export type Command<T extends SlashCommandBuilder | ContextMenuCommandBuilder> = {
+export type Command<TInteraction extends ChatInputCommandInteraction | ContextMenuCommandInteraction> = {
     global?: boolean;
-    customId?: string;
-    data: CommandData<T>;
-    execute: (interaction: CommandInteractionType<T>, client: DC) => Promise<void>;
-    autocomplete?: (interaction: AutocompleteInteraction, client: DC) => Promise<void>;
-    submit?: (interaction: ModalSubmitInteraction, client: DC) => Promise<void>;
+    cooldown?: number;
+    data: CommandData<TInteraction>;
+    execute: (interaction: TInteraction, client: Bot) => Promise<void>;
+    autocomplete?: (interaction: AutocompleteInteraction, client: Bot) => Promise<void>;
 };
 
 export type Event<T extends keyof ClientEvents> = {
     once?: boolean;
     name: T;
-    execute: (client: DC, ...args: ClientEvents[T]) => Promise<void>;
+    execute: (client: Bot, ...args: ClientEvents[T]) => Promise<void>;
 };
+
+export { Events };

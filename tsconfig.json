@@ -7,8 +7,6 @@
         "noEmit": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "rootDirs": ["src"],
-        "outDir": "build",
         "module": "CommonJS"
     },
     "include": ["**/*.ts"],

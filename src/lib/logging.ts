@@ -1,12 +1,3 @@
-import winston from 'winston';
+import createLogger from 'pino';
 
-const logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        winston.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
-    ),
-    transports: [new winston.transports.Console()],
-});
-
-export { logger };
+export const logger = createLogger();

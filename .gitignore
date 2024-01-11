@@ -1,13 +1,10 @@
 # Dependencies
 node_modules
-package-lock.json
-
-# Production
-/build
+yarn.lock
 
 # Local files
 .env
-prisma/
+prisma
 !prisma/schema.prisma
 
 # IDE

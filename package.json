@@ -1,39 +1,28 @@
 {
-    "name": "bot",
-    "version": "0.2.0",
+    "name": "bot-template",
+    "version": "1.0.0",
     "description": "A Discord bot template using TypeScript, Prisma, and Discord.js",
+    "scripts": {
+        "start": "ts-node src/index.ts",
+        "prettier": "prettier --write **/*.{ts,js}"
+    },
+    "private": true,
     "author": {
         "name": "zueripat",
         "url": "https://gitlab.com/zueripat"
     },
-    "scripts": {
-        "start": "node build/index.js",
-        "build": "npm run format && tsc",
-        "dev": "npx prisma generate && ts-node src/index.ts",
-        "migrate": "npx prisma migrate dev --name init --preview-feature",
-        "format": "prettier --write \"src/**/*.ts\""
-    },
-    "prettier": {
-        "printWidth": 120,
-        "tabWidth": 4,
-        "singleQuote": true,
-        "bracketSpacing": true,
-        "semi": true,
-        "trailingComma": "all",
-        "arrowParens": "always",
-        "endOfLine": "crlf"
-    },
     "dependencies": {
-        "@prisma/client": "^5.7.0",
+        "@prisma/client": "^5.7.1",
         "discord.js": "^14.14.1",
         "dotenv": "^16.3.1",
-        "winston": "^3.11.0"
+        "pino": "^8.17.2"
     },
     "devDependencies": {
-        "@types/node": "^20.10.4",
+        "@types/node": "^20.10.6",
         "prettier": "^3.1.1",
-        "prisma": "^5.7.0",
+        "prisma": "^5.7.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.3.3"
-    }
+    },
+    "packageManager": "yarn@1.22.21"
 }
