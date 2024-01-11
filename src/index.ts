@@ -1,10 +1,6 @@
-import { DC } from './lib/discord';
+import { Bot } from './util/bot';
 
 const discordToken = process.env.DISCORD_TOKEN as string;
-const client = new DC({ intents: ['Guilds'] });
+const client = new Bot({ intents: ['Guilds'] });
 
-async function main(): Promise<void> {
-    await client.login(discordToken);
-}
-
-main().finally(() => client.prisma.$disconnect());
+void client.login(discordToken);

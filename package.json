@@ -1,39 +1,36 @@
 {
-    "name": "bot",
-    "version": "0.2.0",
+    "name": "bot-template",
+    "version": "1.0.0",
     "description": "A Discord bot template using TypeScript, Prisma, and Discord.js",
-    "author": {
-        "name": "zueripat",
-        "url": "https://gitlab.com/zueripat"
-    },
     "scripts": {
-        "start": "node build/index.js",
-        "build": "npm run format && tsc",
-        "dev": "npx prisma generate && ts-node src/index.ts",
-        "migrate": "npx prisma migrate dev --name init --preview-feature",
-        "format": "prettier --write \"src/**/*.ts\""
+        "start": "ts-node src/index.ts",
+        "lint": "eslint src --ext .ts",
+        "lint:fix": "eslint src --ext .ts --fix",
+        "prettier": "prettier --write **/*.{ts,js,json}"
     },
-    "prettier": {
-        "printWidth": 120,
-        "tabWidth": 4,
-        "singleQuote": true,
-        "bracketSpacing": true,
-        "semi": true,
-        "trailingComma": "all",
-        "arrowParens": "always",
-        "endOfLine": "crlf"
-    },
+    "private": true,
+    "author": "zueripat <ruedepatrick@gmail.com>",
     "dependencies": {
-        "@prisma/client": "^5.7.0",
+        "@prisma/client": "^5.7.1",
         "discord.js": "^14.14.1",
         "dotenv": "^16.3.1",
-        "winston": "^3.11.0"
+        "pino": "^8.17.2"
     },
     "devDependencies": {
-        "@types/node": "^20.10.4",
+        "@types/node": "^20.10.6",
+        "@typescript-eslint/eslint-plugin": "^6.18.1",
+        "@typescript-eslint/parser": "^6.18.1",
+        "eslint": "^8.56.0",
+        "eslint-config-neon": "^0.1.57",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3",
         "prettier": "^3.1.1",
-        "prisma": "^5.7.0",
+        "prisma": "^5.7.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.3.3"
-    }
+    },
+    "engines": {
+        "node": ">=17.0.0"
+    },
+    "packageManager": "yarn@4.0.2"
 }
