@@ -1,11 +1,16 @@
-# Dependencies
-node_modules
-yarn.lock
-
-# Local files
+# secrets
 .env
-prisma
+
+# build flow
+dist/
+node_modules/
+
+# miscellaneous
+prisma/
+.idea/
+
+.yarn/*
+!.yarn/releases
+!.yarn/patches
 !prisma/schema.prisma
 
-# IDE
-.idea
